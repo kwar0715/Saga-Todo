@@ -3,13 +3,14 @@ import {remove} from 'lodash';
 import todos from './mocks/todos';
 
 const headers = { 'Content-Type': 'application/json' };
-const backend = "";//"http://internal-alb-mockableexpress-765192002.us-east-1.elb.amazonaws.com/saga-todo";
+const backend = process.env.BACKEND || "";
 
 const storeData = {
     todos
 }
 
 const makeRequest = async(url, method, data, headers) =>{
+    console.log(backend)
     if(backend!==''){
         if(!method){
             return await(await fetch(`${backend}${url}`)).json();
