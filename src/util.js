@@ -1,0 +1,1 @@
+export const sleep = (mills) => new Promise(resolve=> setTimeout(resolve,mills))

@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import API from './API'
 
-function* fetchTodoList(action) {
+export function* fetchTodoList() {
    try {
       const todoList = yield call(API.fetchTodoList);
       yield put({type: "TODO_LIST_LOADED", todoList: todoList.todos});

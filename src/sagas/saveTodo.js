@@ -1,8 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import API from './API'
 
-function* saveTodo(action) {
-   yield put({type: "IS_LOADING", payload: true});
+export function* saveTodo(action) {
    try {
       yield call(API.saveTodo,action.payload);
       yield put({type: "TODO_SAVED"});

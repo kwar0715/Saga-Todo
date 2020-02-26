@@ -1,16 +1,17 @@
 import fetch from 'node-fetch'
 import {remove} from 'lodash';
 import todos from './mocks/todos';
+import { sleep } from '../util';
 
 const headers = { 'Content-Type': 'application/json' };
 const backend = process.env.BACKEND || "";
+const FAKE_REQUEST_DELAY = 1000;
 
 const storeData = {
     todos
 }
 
 const makeRequest = async(url, method, data, headers) =>{
-    console.log(backend)
     if(backend!==''){
         if(!method){
             return await(await fetch(`${backend}${url}`)).json();
@@ -21,7 +22,7 @@ const makeRequest = async(url, method, data, headers) =>{
             headers}
             )).json();
     }
-    await sleep(1000);
+    await sleep(FAKE_REQUEST_DELAY);
     if(url==='/data'){
         return storeData;
     }
@@ -39,8 +40,6 @@ const makeRequest = async(url, method, data, headers) =>{
         remove( storeData.todos, n=> n.id===data.id);
     }
 }
-
-const sleep = (mills) => new Promise(resolve=> setTimeout(resolve,mills))
 
 const fetchTodoList = async () => (await makeRequest(`/data`));
 const saveTodo = async (data) => (await makeRequest(`/add`,'POST', data, headers));

@@ -1,8 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import API from './API'
 
-function* deleteTodo(action) {
-   yield put({type: "IS_LOADING", payload: true});
+export function* deleteTodo(action) {
    try {
       yield call(API.deleteTodo,action.payload);
       yield put({type: "TODO_DELETED"});
