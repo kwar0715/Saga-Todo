@@ -9,9 +9,13 @@ const style={
     }
 }
 
-const CardsGrid = ({ todoList, saveTodo, deleteTodo, searchTerm }) => {
-    const filteredTodos = todoList.filter(todo=> {
+const CardsGrid = ({ todoList, saveTodo, deleteTodo, searchTerm }) => (
+    <CardColumns style={style.cardDeck}>
+        {todoList.filter(todo=> {
+        // if search term is not defined or empty, should show all of elements    
         if(!searchTerm || searchTerm==="") return true;
+
+        //else return all elements which match title and description
         const preparedSearchTerm = toLower(trim(searchTerm));
         return toLower(todo.title).includes(preparedSearchTerm)
         || toLower(todo.description).includes(preparedSearchTerm);
@@ -20,12 +24,10 @@ const CardsGrid = ({ todoList, saveTodo, deleteTodo, searchTerm }) => {
         return (
             <CardItem title={title} description={description} id={id} saveTodo={saveTodo} deleteTodo={deleteTodo}/>
         )
-     })
-    return(<CardColumns style={style.cardDeck}>
-        {filteredTodos}
+     })}
         <CardItem isNew saveTodo={saveTodo}/>
-    </CardColumns>)
-}
+    </CardColumns>
+)
 
 
 export default CardsGrid;

@@ -91,8 +91,7 @@ class CardItem extends React.Component{
                     </Card>
                 </Form>)
         }
-        return(
-                <Card bg="light" style={cardStyle}>
+        return(<Card bg="light" style={cardStyle}>
                     <Card.Body>
                         <Card.Title>
                          {title}
@@ -103,7 +102,8 @@ class CardItem extends React.Component{
                     <Button variant="success" onClick={()=> this.setState({ isEditable: true})}>Edit</Button>
                     <Button variant="danger" onClick={this.onDeleteTodo}>Delete</Button>
                     </Card.Body>
-                </Card>)
+                </Card>
+        );
     }
 }
 
