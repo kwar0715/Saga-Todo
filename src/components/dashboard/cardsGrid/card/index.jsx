@@ -46,6 +46,18 @@ class CardItem extends React.Component{
         });
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.title && nextProps.description){
+            this.setState({
+                data: {
+                    id: nextProps.id,
+                    title: nextProps.title,
+                    description: nextProps.description
+                }
+            })
+        }
+    }
+
     render(){
         const { isNew, isEditable, data} = this.state;
 
