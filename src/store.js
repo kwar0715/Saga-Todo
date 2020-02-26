@@ -1,20 +1,22 @@
 import {createStore, compose, applyMiddleware} from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootReducers from './rootReducers'
-import { test } from './sagas';
+import saveTodoSaga from './sagas/saveTodo'
+import fetchTodoListSaga from './sagas/loadTodos';
+import deleteTodoSaga from './sagas/deleteTodo';
 
 const sagaMiddleware = createSagaMiddleware()
 
 const initialState = {
-    todos: [],
+    todoList: [],
     loading: true
 }
 
 
-const store = createStore(state => state, initialState , compose(applyMiddleware(sagaMiddleware),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))
+const store = createStore(rootReducers, initialState , compose(applyMiddleware(sagaMiddleware),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))
 
-console.log(store.getState())
-
-sagaMiddleware.run(test);
+sagaMiddleware.run(fetchTodoListSaga);
+sagaMiddleware.run(saveTodoSaga);
+sagaMiddleware.run(deleteTodoSaga);
 
 export default store;
