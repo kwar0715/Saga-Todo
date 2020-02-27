@@ -28,6 +28,7 @@ const rootReducer = (state = Map({}), action) => {
       case "TODO_COMPLETED": return todoCompleted(state,action.payload);
       case "TODO_DELETED": return todoDeleted(state,action.payload);
       case "TODO_SAVED": return todoSaved(state,action.payload);
+      case "SEARCH_TODO": return state.set('searchTerm', action.payload)
       default:
         return state
     }

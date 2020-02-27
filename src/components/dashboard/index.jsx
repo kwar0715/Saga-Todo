@@ -3,16 +3,12 @@ import { connect } from "react-redux";
 import Header from './header';
 import Loading from '../loader';
 import CardsGrid from './cardsGrid';
+import getTodoList from './selectors/todoSelector'
 
 class Dashboard extends React.Component{
 
     constructor(props){
         super(props);
-
-        this.state={
-            searchTerm:''
-        }
-        
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
     }
 
@@ -22,7 +18,7 @@ class Dashboard extends React.Component{
 
     onSearchSubmit(event){
         event.preventDefault();
-        this.setState({searchTerm: event.target.txtSearch.value});
+        this.props.searchTodo(event.target.txtSearch.value);
     }
     
     render(){
@@ -34,7 +30,6 @@ class Dashboard extends React.Component{
             <>
             <Header onSearchSubmit={this.onSearchSubmit}/>
             <CardsGrid 
-                searchTerm={this.state.searchTerm} 
                 todoList={todoList} 
                 saveTodo={this.props.saveTodo}
                 deleteTodo={this.props.deleteTodo}
@@ -47,7 +42,7 @@ class Dashboard extends React.Component{
 
 const mapStateToProps = state => {
     return({
-        todoList: state.get('todoList') || [],
+        todoList: getTodoList(state),
         loading: state.get('loading')
     })
 };
@@ -56,7 +51,8 @@ const mapDispatchToProps = dispatch => ({
     loadTodoList: () => dispatch({type: 'LOAD_TODO_LIST'}),
     saveTodo: (payload) => dispatch({type: 'SAVE_TODO', payload}),
     deleteTodo: (payload) => dispatch({type: 'DELETE_TODO', payload}),
-    completeTodo: (payload) => dispatch({type: 'COMPLETE_TODO', payload})
+    completeTodo: (payload) => dispatch({type: 'COMPLETE_TODO', payload}),
+    searchTodo: (payload) => dispatch({type: 'SEARCH_TODO', payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

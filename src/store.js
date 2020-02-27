@@ -12,7 +12,8 @@ const sagaMiddleware = createSagaMiddleware()
 
 const initialState = fromJS({
     todoList: [],
-    loading: true
+    loading: true,
+    searchTerm: ''
 })
 
 
