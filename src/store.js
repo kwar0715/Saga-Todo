@@ -1,6 +1,7 @@
 import {createStore, applyMiddleware} from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { fromJS } from "immutable";
 import rootReducers from './rootReducers'
 import saveTodoSaga from './sagas/saveTodo'
 import fetchTodoListSaga from './sagas/loadTodos';
@@ -9,10 +10,10 @@ import completeTodoSaga from './sagas/completeTodo';
 
 const sagaMiddleware = createSagaMiddleware()
 
-const initialState = {
+const initialState = fromJS({
     todoList: [],
     loading: true
-}
+})
 
 
 const store = createStore(rootReducers, initialState , composeWithDevTools(applyMiddleware(sagaMiddleware)))

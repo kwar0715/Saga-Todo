@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 import API from './API'
 
 export function* completeTodo(action) {
@@ -13,7 +13,7 @@ export function* completeTodo(action) {
 }
 
 function* completeTodoSaga() {
-  yield takeEvery("COMPLETE_TODO", completeTodo);
+  yield takeLatest("COMPLETE_TODO", completeTodo);
 }
 
 export default completeTodoSaga;

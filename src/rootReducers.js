@@ -1,46 +1,30 @@
-import {findIndex, remove} from 'lodash';
+import { Map } from 'immutable'
+
+const TODO_LIST = "todoList"
 
 const todoCompleted = (state, payload) => {
-  const i = findIndex(state.todoList, todo => todo.id===payload.id)
-  const todoList = state.todoList;
-  todoList[i].completed = payload.completed
-  return Object.assign({}, state, {
-    todoList
-  })
+  const index = state.get(TODO_LIST).findIndex(o => o.get('id') === payload.id)
+  return state.set(TODO_LIST, state.get(TODO_LIST).setIn([index,'completed'],payload.completed));
 }
 
 const todoDeleted = (state,payload)=>{
-  const todoList = state.todoList;
-  remove(todoList, n=> n.id===payload.id)
-  return Object.assign( {}, state, {
-    todoList
-  });
+  return state.set(TODO_LIST, state.get(TODO_LIST).filter(o => o.get('id') !== payload.id));
 }
 
 const todoSaved = (state,payload)=>{
-  const todoList = state.todoList;
-  remove( todoList, n=> n.id===payload.id);  
-  todoList.push({
-    id: payload.id, 
-    title: payload.title, 
-    description: payload.description,
-    completed: payload.completed
-  })
-  return Object.assign( {}, state, {
-    todoList
-  });
+  state.updateIn(['todoList'],arr=>arr.push({
+      id: payload.id, 
+      title: payload.title, 
+      description: payload.description,
+      completed: payload.completed
+    }))
+  return state;
 }
 
-const rootReducer = (state = {}, action) => {
+const rootReducer = (state = Map({}), action) => {
     switch (action.type) {
-      case "TODO_LIST_LOADED":
-          return Object.assign({}, state, {
-            todoList: action.todoList
-          });
-      case "IS_LOADING":
-          return Object.assign({}, state, {
-            loading: action.payload
-      });
+      case "TODO_LIST_LOADED": return state.set('todoList', action.todoList)
+      case "IS_LOADING": return state.set('loading',action.payload)
       case "TODO_COMPLETED": return todoCompleted(state,action.payload);
       case "TODO_DELETED": return todoDeleted(state,action.payload);
       case "TODO_SAVED": return todoSaved(state,action.payload);

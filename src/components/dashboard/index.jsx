@@ -47,8 +47,8 @@ class Dashboard extends React.Component{
 
 const mapStateToProps = state => {
     return({
-        todoList: state.todoList,
-        loading: state.loading
+        todoList: state.get('todoList') || [],
+        loading: state.get('loading')
     })
 };
   
