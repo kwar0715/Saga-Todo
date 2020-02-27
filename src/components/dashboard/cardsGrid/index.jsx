@@ -4,7 +4,8 @@ import { CardColumns } from 'react-bootstrap';
 
 const style={
     cardDeck: {
-        marginTop: '30px'
+        marginTop: '30px',
+        columnCount: 5
     }
 }
 

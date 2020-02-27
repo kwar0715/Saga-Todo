@@ -28,7 +28,7 @@ class Dashboard extends React.Component{
         }
         return (
             <>
-            <Header onSearchSubmit={this.onSearchSubmit}/>
+            <Header onSearchSubmit={this.onSearchSubmit} searchTerm={this.props.searchTerm}/>
             <CardsGrid 
                 todoList={todoList} 
                 saveTodo={this.props.saveTodo}
@@ -43,7 +43,8 @@ class Dashboard extends React.Component{
 const mapStateToProps = state => {
     return({
         todoList: getTodoList(state),
-        loading: state.get('loading')
+        loading: state.get('loading'),
+        searchTerm: state.get('searchTerm')
     })
 };
   

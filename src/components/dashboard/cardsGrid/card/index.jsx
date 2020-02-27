@@ -1,10 +1,10 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {  Card, Button, Form } from 'react-bootstrap';
+import {  Card, Button, Form, ButtonGroup } from 'react-bootstrap';
 
 const cardStyle={
-    width: "18rem",
-    height: "18rem"
+    width: '14rem',
+    height: '10rem',
 }
 
 const centerText = {
@@ -75,9 +75,9 @@ class CardItem extends React.Component{
 
         if(isNew){
             return(
-                <Card bg="secondary" style={cardStyle}>
+                <Card style={cardStyle} className="text-center">
                     <Card.Body onClick={()=> this.setState({isNew: false,isEditable: true})} >
-                        <Card.Title style={centerText}>Create New</Card.Title>
+                        <Card.Text style={centerText}>Create New</Card.Text>
                     </Card.Body>
                 </Card>
             )
@@ -85,8 +85,8 @@ class CardItem extends React.Component{
         const {id, title, description, completed} = data;
         if(isEditable){
             return(
-                <Form onSubmit={this.onCreateNewTodo}>
-                    <Card bg="light" style={cardStyle}>
+                <Form style={cardStyle} onSubmit={this.onCreateNewTodo}>
+                    <Card className="p-3" bg="light" style={cardStyle}>
                         <Card.Body>
                             <Card.Title>
                                 <Form.Control id="txtTitle" type="text" defaultValue={title} placeholder="Title" />
@@ -97,10 +97,12 @@ class CardItem extends React.Component{
                             <Card.Text hidden>
                                 <Form.Control id="txtid" type="text" defaultValue={id} placeholder="Description"/>
                             </Card.Text>
-                        <Button variant="primary" type="submit">Save</Button>
-                        <Button variant="danger" onClick={()=> this.setState({isNew: true, isEditable: false})}>Cancel</Button>
+                            <ButtonGroup size="sm" className="mt-3">
+                                <Button variant="primary" type="submit">Save</Button>
+                                <Button variant="danger" onClick={()=> this.setState({isNew: !id ? true : false, isEditable: false})}>Cancel</Button>
+                            </ButtonGroup>
                         </Card.Body>
-                    </Card>txtDescription
+                    </Card>
                 </Form>)
         }
         return(<Card bg="light" style={cardStyle}>
@@ -111,9 +113,11 @@ class CardItem extends React.Component{
                         <Card.Text>
                          {description}
                         </Card.Text>
-                    <Button variant={completed ? "primary" : "light"} onClick={this.onComplete}>{completed ? "Make Active" : "Make Completed"}</Button>    
-                    <Button variant="success" onClick={()=> this.setState({ isEditable: true})}>Edit</Button>
-                    <Button variant="danger" onClick={this.onDeleteTodo}>Delete</Button>
+                        <ButtonGroup size="sm" className="mt-3">
+                            <Button variant={completed ? "primary" : "secondary"} onClick={this.onComplete}>{!completed ? "Active" : "Completed"}</Button>    
+                            <Button variant="success" onClick={()=> this.setState({ isEditable: true})}>Edit</Button>
+                            <Button variant="danger" onClick={this.onDeleteTodo}>Delete</Button>
+                        </ButtonGroup>
                     </Card.Body>
                 </Card>
         );
