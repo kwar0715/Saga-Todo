@@ -9,6 +9,11 @@ const payLoad = {
 it('Load todos successfully', ()=>{
   testSaga(fetchTodoList)
   .next()
+  .put({
+    type: 'IS_LOADING',
+    payload: true,
+  })
+  .next()
   .call(API.fetchTodoList).next(payLoad)
   .put({
     type: 'TODO_LIST_LOADED',
@@ -26,6 +31,11 @@ it('Load todos successfully', ()=>{
 it('Throwing an error when deleting data', ()=>{
   const error = new Error('error');
   testSaga(fetchTodoList)
+  .next()
+  .put({
+    type: 'IS_LOADING',
+    payload: true,
+  })
   .next()
   .call(API.fetchTodoList).throw(error)
   .put({

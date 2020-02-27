@@ -22,12 +22,14 @@ class CardItem extends React.Component{
             data: {
                 id: props.id,
                 title: props.title,
-                description: props.description
+                description: props.description,
+                completed: props.completed
             }
         }
 
         this.onCreateNewTodo = this.onCreateNewTodo.bind(this);
         this.onDeleteTodo = this.onDeleteTodo.bind(this);
+        this.onComplete = this.onComplete.bind(this);
     }
 
     onCreateNewTodo(event){
@@ -35,7 +37,8 @@ class CardItem extends React.Component{
         this.props.saveTodo({
             id: event.target.txtid.value || uuidv4(),
             title: event.target.txtTitle.value,
-            description: event.target.txtDescription.value
+            description: event.target.txtDescription.value,
+            completed: this.state.data.completed || false
         });
     }
 
@@ -46,13 +49,22 @@ class CardItem extends React.Component{
         });
     }
 
+    onComplete(event){
+        event.preventDefault();
+        this.props.completeTodo({
+            id: this.state.data.id,
+            completed: !this.state.data.completed}
+            );
+    }
+
     componentWillReceiveProps(nextProps){
         if(nextProps.title && nextProps.description){
             this.setState({
                 data: {
                     id: nextProps.id,
                     title: nextProps.title,
-                    description: nextProps.description
+                    description: nextProps.description,
+                    completed: nextProps.completed
                 }
             })
         }
@@ -70,7 +82,7 @@ class CardItem extends React.Component{
                 </Card>
             )
         }
-        const {id, title, description} = data;
+        const {id, title, description, completed} = data;
         if(isEditable){
             return(
                 <Form onSubmit={this.onCreateNewTodo}>
@@ -88,7 +100,7 @@ class CardItem extends React.Component{
                         <Button variant="primary" type="submit">Save</Button>
                         <Button variant="danger" onClick={()=> this.setState({isNew: true, isEditable: false})}>Cancel</Button>
                         </Card.Body>
-                    </Card>
+                    </Card>txtDescription
                 </Form>)
         }
         return(<Card bg="light" style={cardStyle}>
@@ -99,6 +111,7 @@ class CardItem extends React.Component{
                         <Card.Text>
                          {description}
                         </Card.Text>
+                    <Button variant={completed ? "primary" : "light"} onClick={this.onComplete}>{completed ? "Make Active" : "Make Completed"}</Button>    
                     <Button variant="success" onClick={()=> this.setState({ isEditable: true})}>Edit</Button>
                     <Button variant="danger" onClick={this.onDeleteTodo}>Delete</Button>
                     </Card.Body>

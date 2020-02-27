@@ -9,7 +9,7 @@ const style={
     }
 }
 
-const CardsGrid = ({ todoList, saveTodo, deleteTodo, searchTerm }) => (
+const CardsGrid = ({ todoList, saveTodo, deleteTodo, completeTodo, searchTerm }) => (
     <CardColumns style={style.cardDeck}>
         {todoList.filter(todo=> {
         // if search term is not defined or empty, should show all of elements    
@@ -20,9 +20,15 @@ const CardsGrid = ({ todoList, saveTodo, deleteTodo, searchTerm }) => (
         return toLower(todo.title).includes(preparedSearchTerm)
         || toLower(todo.description).includes(preparedSearchTerm);
     }).map(todo=> {
-        const {title, description, id} = todo;
+        const {title, description, id, completed} = todo;
         return (
-            <CardItem title={title} description={description} id={id} saveTodo={saveTodo} deleteTodo={deleteTodo}/>
+            <CardItem title={title} 
+                description={description} 
+                id={id} 
+                saveTodo={saveTodo} 
+                deleteTodo={deleteTodo}
+                completed={completed}
+                completeTodo={completeTodo}/>
         )
      })}
         <CardItem isNew saveTodo={saveTodo}/>

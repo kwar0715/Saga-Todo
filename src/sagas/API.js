@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import {remove} from 'lodash';
+import { remove, findIndex } from 'lodash';
 import todos from './mocks/todos';
 import { sleep } from '../util';
 
@@ -31,7 +31,8 @@ const makeRequest = async(url, method, data, headers) =>{
         const todo={
             id: data.id, 
         title: data.title, 
-        description: data.description
+        description: data.description,
+        completed:data.completed
         }   
         const newTodos = [...storeData.todos,todo];
         storeData.todos = newTodos;
@@ -39,14 +40,20 @@ const makeRequest = async(url, method, data, headers) =>{
     if(url==='/remove'){
         remove( storeData.todos, n=> n.id===data.id);
     }
+    if(url==='/complete'){
+        const i = findIndex(storeData.todos, todo => todo.id===data.id)
+        storeData.todos[i].completed = data.completed
+    }
 }
 
 const fetchTodoList = async () => (await makeRequest(`/data`));
 const saveTodo = async (data) => (await makeRequest(`/add`,'POST', data, headers));
 const deleteTodo = async (data) => (await makeRequest(`/remove`,'POST', data, headers));
+const completeTodo = async (data) => (await makeRequest(`/complete`,'POST', data, headers));
 
 export default{
     fetchTodoList,
     saveTodo,
-    deleteTodo
+    deleteTodo,
+    completeTodo
 }

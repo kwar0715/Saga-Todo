@@ -1,14 +1,10 @@
 import { testSaga } from 'redux-saga-test-plan';
 import API from '../API';
-import { saveTodo } from '../saveTodo';
+import { completeTodo } from '../completeTodo';
 
-it('Save a todo successfully', ()=>{
-    const payload = {
-        id:'1',
-        title:'title',
-        description:'description'
-    }
-    testSaga(saveTodo, 
+it('Completed a todo successfully', ()=>{
+    const payload = true
+    testSaga(completeTodo, 
         {
             payload
         })
@@ -18,10 +14,10 @@ it('Save a todo successfully', ()=>{
         payload: true,
       })
     .next()
-    .call(API.saveTodo, payload)
+    .call(API.completeTodo, payload)
     .next()
     .put({
-        type: 'TODO_SAVED',
+        type: 'TODO_COMPLETED',
         payload
       })
     .next()
@@ -35,12 +31,8 @@ it('Save a todo successfully', ()=>{
 
 it('Throwing an error when save data', ()=>{
     const error = new Error('error');
-    const payload = {
-        id:'1',
-        title:'title',
-        description:'description'
-    }
-    testSaga(saveTodo, 
+    const payload = true
+    testSaga(completeTodo, 
         {
             payload
         })
@@ -50,9 +42,9 @@ it('Throwing an error when save data', ()=>{
         payload: true,
     })
     .next()
-    .call(API.saveTodo, payload).throw(error)
+    .call(API.completeTodo, payload).throw(error)
     .put({
-        type: 'TODO_SAVED_ERROR',
+        type: 'TODO_COMPLETED_ERROR',
         message: 'error',
       })
     .next()

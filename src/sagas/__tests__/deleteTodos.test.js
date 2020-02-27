@@ -12,15 +12,22 @@ it('Delete a todo successfully', ()=>{
             payload
         })
     .next()
+    .put({
+        type: 'IS_LOADING',
+        payload: true,
+    })
+    .next()
     .call(API.deleteTodo, payload)
     .next()
     .put({
-        type: 'TODO_DELETED'
+        type: 'TODO_DELETED',
+        payload
       })
     .next()
     .put({
-        type: 'LOAD_TODO_LIST'
-      })
+        type: 'IS_LOADING',
+        payload: false,
+    })
     .next()
     .isDone();
 })
@@ -35,6 +42,11 @@ it('Throwing an error when deleting data', ()=>{
             payload
         })
     .next()
+    .put({
+        type: 'IS_LOADING',
+        payload: true,
+    })
+    .next()
     .call(API.deleteTodo, payload).throw(error)
     .put({
         type: 'TODO_DELETED_ERROR',
@@ -42,8 +54,9 @@ it('Throwing an error when deleting data', ()=>{
       })
     .next()
     .put({
-        type: 'LOAD_TODO_LIST'
-      })
+        type: 'IS_LOADING',
+        payload: false,
+    })
     .next()
     .isDone();
 })

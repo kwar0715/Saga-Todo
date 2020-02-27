@@ -38,6 +38,7 @@ class Dashboard extends React.Component{
                 todoList={todoList} 
                 saveTodo={this.props.saveTodo}
                 deleteTodo={this.props.deleteTodo}
+                completeTodo= {this.props.completeTodo}
             />
         </>  
         )
@@ -54,7 +55,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     loadTodoList: () => dispatch({type: 'LOAD_TODO_LIST'}),
     saveTodo: (payload) => dispatch({type: 'SAVE_TODO', payload}),
-    deleteTodo: (payload) => dispatch({type: 'DELETE_TODO', payload})
+    deleteTodo: (payload) => dispatch({type: 'DELETE_TODO', payload}),
+    completeTodo: (payload) => dispatch({type: 'COMPLETE_TODO', payload})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
