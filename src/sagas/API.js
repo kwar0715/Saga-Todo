@@ -5,7 +5,7 @@ import { sleep } from '../util';
 
 const headers = { 'Content-Type': 'application/json' };
 const backend = process.env.BACKEND || "";
-const FAKE_REQUEST_DELAY = 1000;
+const FAKE_REQUEST_DELAY = 500;
 
 const storeData = {
     todos

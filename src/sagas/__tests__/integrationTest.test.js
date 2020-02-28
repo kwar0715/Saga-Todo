@@ -2,7 +2,7 @@ import SagaTester from 'redux-saga-tester';
 import { runSaga } from 'redux-saga';
 import sinon from 'sinon';
 import reducer from '../../rootReducers';
-import { fromJS } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import {fetchTodoList} from '../../sagas/loadTodos'
 import API from '../API';
 
@@ -16,18 +16,21 @@ test('with redux-saga-tester', async () => {
     reducers: reducer
   });
 
+  API.fetchTodoList = jest.fn(()=>({
+    todos:[]
+  }));
+
   sagaTester.start(fetchTodoList);
 
   sagaTester.dispatch({type:'LOAD_TODO_LIST'});
 
-  expect(sagaTester.wasCalled({
-    type: 'TODO_LIST_LOADED',
-    todoList: [],
-  })).toBe(false);
+  expect(sagaTester.wasCalled('IS_LOADING')).toBe(true);
 
-  expect(sagaTester.getState()).toEqual(fromJS({
+  await sagaTester.waitFor('TODO_LIST_LOADED');
+
+  expect(sagaTester.getState()).toEqual(Map({
     todoList: [],
-    loading: true,
+    loading: false,
     searchTerm: ''
  }));
 });
@@ -40,7 +43,7 @@ test('Testing the full Saga', async () => {
     })
   );
 
-  const y = await runSaga({
+  await runSaga({
     dispatch: (action) => dispatched.push(action)
   },fetchTodoList).toPromise();
 
